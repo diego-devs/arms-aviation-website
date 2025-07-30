@@ -11,12 +11,12 @@ const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
     const { t } = useLanguage();
 
     return (
-        <div className="bg-white dark:bg-gray-900 min-h-screen text-gray-800 dark:text-gray-200 pt-24 md:pt-32 pb-20">
+        <div className="bg-transparent min-h-screen text-gray-800 dark:text-gray-200 pt-24 md:pt-32 pb-20">
             <div className="container mx-auto px-6 max-w-4xl">
                 <button onClick={() => onNavigate('home')} className="mb-8 text-amber-500 hover:text-amber-600 transition-colors font-semibold">
                     &larr; {t.termsPage.backToHome}
                 </button>
-                <div className="bg-gray-50 dark:bg-gray-800 p-8 md:p-12 rounded-lg border border-gray-200 dark:border-gray-700">
+                <div className="bg-gray-50/80 dark:bg-gray-800/80 backdrop-blur-md p-8 md:p-12 rounded-lg border border-gray-200/50 dark:border-gray-700/50">
                     <h1 className="text-3xl md:text-4xl font-black uppercase tracking-widest text-gray-900 dark:text-gray-100 mb-8">
                         {t.termsPage.title}
                     </h1>

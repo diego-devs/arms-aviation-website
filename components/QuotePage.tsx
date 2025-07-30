@@ -93,14 +93,14 @@ const QuotePage: React.FC<QuotePageProps> = ({ onNavigate, preSelectedAircraftId
     };
 
     return (
-        <div className="bg-white dark:bg-gray-900 min-h-screen text-gray-800 dark:text-gray-200 pt-24 md:pt-32 pb-20">
+        <div className="bg-transparent min-h-screen text-gray-800 dark:text-gray-200 pt-24 md:pt-32 pb-20">
             <div className="container mx-auto px-6">
                 <button onClick={() => onNavigate('home')} className="mb-8 text-amber-500 hover:text-amber-600 transition-colors font-semibold">
                     &larr; {t.quotePage.backToHome}
                 </button>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                     {/* Left Column: Form */}
-                    <div className="bg-gray-50 dark:bg-gray-800 p-8 rounded-lg border border-gray-200 dark:border-gray-700">
+                    <div className="bg-gray-50/80 dark:bg-gray-800/80 backdrop-blur-md p-8 rounded-lg border border-gray-200/50 dark:border-gray-700/50">
                         <h1 className="text-3xl md:text-4xl font-black uppercase tracking-widest text-gray-900 dark:text-gray-100 mb-8">
                             {t.quotePage.title}
                         </h1>
@@ -202,7 +202,7 @@ const QuotePage: React.FC<QuotePageProps> = ({ onNavigate, preSelectedAircraftId
                                 )}
                             </>
                         ) : (
-                             <div className="w-full h-full bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center p-8">
+                             <div className="w-full h-full bg-gray-100/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-lg flex items-center justify-center p-8">
                                 <p className="text-gray-500 dark:text-gray-400 text-center">{t.quotePage.selectAircraftPrompt}</p>
                             </div>
                         )}

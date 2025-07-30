@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { images } from '../lib/images';
 
 interface HeroProps {
     onNavigate: (page: 'quote') => void;
@@ -12,11 +11,7 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
 
     return (
         <section className="relative h-screen flex items-center justify-center">
-            <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
-            <div
-                className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: `url('${images.hero.background}')` }}
-            ></div>
+            <div className="absolute inset-0 bg-black/30 z-10"></div>
             <div className="relative z-20 text-center text-white px-4">
                 <h1 className="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-widest">
                     {t.hero.title}

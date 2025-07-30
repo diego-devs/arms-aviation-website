@@ -11,18 +11,13 @@ interface ThemeContextProps {
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [theme, setTheme] = useState<Theme>('light');
+    const [theme, setTheme] = useState<Theme>('dark'); // Default theme is now dark
 
     useLayoutEffect(() => {
         const storedTheme = window.localStorage.getItem('theme') as Theme;
-        // Check for stored theme first. If not found, check for system preference.
+        // Respect stored theme if it exists
         if (storedTheme) {
             setTheme(storedTheme);
-        } else {
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            if (prefersDark) {
-                setTheme('dark');
-            }
         }
     }, []);
 

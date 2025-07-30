@@ -37,7 +37,7 @@ const Fleet: React.FC<FleetProps> = ({ onNavigate }) => {
     const currentAircraft = fleetData[currentIndex];
 
     return (
-        <section id="fleet" className="py-20 bg-gray-50 dark:bg-gray-800">
+        <section id="fleet" className="py-20 bg-gray-50/80 dark:bg-gray-900/70 backdrop-blur-md">
             <div className="container mx-auto px-6">
                 <h2 className="text-3xl md:text-4xl font-black text-center uppercase tracking-widest text-gray-900 dark:text-gray-100">{t.fleet.title}</h2>
                 <div className="mt-12 relative max-w-5xl mx-auto">

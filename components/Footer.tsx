@@ -18,7 +18,7 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
     }
 
     return (
-        <footer className="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-12">
+        <footer className="bg-gray-50/80 dark:bg-gray-900/70 backdrop-blur-md border-t border-gray-200/50 dark:border-gray-700/50 py-12">
             <div className="container mx-auto px-6">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     {/* Column 1: Logo & About */}
@@ -65,7 +65,7 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                     </div>
                 </div>
 
-                <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700 text-center text-gray-500 dark:text-gray-400 text-sm">
+                <div className="mt-8 pt-8 border-t border-gray-200/50 dark:border-gray-700/50 text-center text-gray-500 dark:text-gray-400 text-sm">
                     <p>&copy; {new Date().getFullYear()} ARMS AVIATION. {t.footer.copyright}</p>
                 </div>
             </div>
