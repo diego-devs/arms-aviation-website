@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { FacebookIcon, InstagramIcon, TwitterIcon } from './icons/SocialIcons';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -23,7 +22,7 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     {/* Column 1: Logo & About */}
                     <div className="md:col-span-1">
-                        <ArmsAviationLogo className="text-xl" />
+                        <ArmsAviationLogo className="h-20" />
                         <p className="mt-4 text-gray-600 dark:text-gray-400 text-sm">
                            {t.footer.about}
                         </p>
@@ -60,7 +59,7 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                         <div className="mt-4 flex space-x-4">
                             <a href="#" aria-label="Facebook" className="text-gray-500 hover:text-amber-500 transition-colors"><FacebookIcon /></a>
                             <a href="#" aria-label="Instagram" className="text-gray-500 hover:text-amber-500 transition-colors"><InstagramIcon /></a>
-                            <a href="#" aria-label="Twitter" className="text-gray-500 hover:text-amber-500 transition-colors"><TwitterIcon /></a>
+                            <a href="#" aria-label="X" className="text-gray-500 hover:text-amber-500 transition-colors"><TwitterIcon /></a>
                         </div>
                     </div>
                 </div>

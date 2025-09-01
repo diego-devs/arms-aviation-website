@@ -1,4 +1,8 @@
 
+
+
+export const logoUrl = '/images/arms_logo_white_horizontal.png';
+
 export const images = {
   hero: {
     background: 'https://images.unsplash.com/photo-1474302770737-173ee21bab63?q=80&w=1808&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
@@ -9,7 +13,7 @@ export const images = {
     ground: 'https://plus.unsplash.com/premium_photo-1661333659084-0ea53ca433fb?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   },
   fleet: {
-    gulfstream4: ['https://images.unsplash.com/photo-1474302770737-173ee21bab63?q=80&w=1808&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'https://picsum.photos/seed/g4_2/1200/800', 'https://picsum.photos/seed/g4_3/1200/800'],
+    gulfstream4: ['https://images.unsplash.com/photo-1474302770737-173ee21bab63?q=80&w=1808&auto=format=fit&crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'https://picsum.photos/seed/g4_2/1200/800', 'https://picsum.photos/seed/g4_3/1200/800'],
     challenger601: ['https://plus.unsplash.com/premium_photo-1682142182464-3be6161b3a42?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'https://picsum.photos/seed/c601_2/1200/800', 'https://picsum.photos/seed/c601_3/1200/800'],
     hawker800: ['https://images.unsplash.com/photo-1619659085985-f51a00f0160a?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'https://picsum.photos/seed/h800_2/1200/800'],
     learjet35: ['https://images.unsplash.com/photo-1540962351504-03099e0a754b?q=80&w=1548&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'https://picsum.photos/seed/lj35_2/1200/800', 'https://picsum.photos/seed/lj35_3/1200/800'],
@@ -19,6 +23,9 @@ export const images = {
   },
   cta: {
     background: 'https://picsum.photos/1920/1080?grayscale',
+  },
+  quote: {
+    placeholder: 'https://images.unsplash.com/photo-1692029861107-991b13db6ad0?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   },
   about: [
     'https://picsum.photos/seed/about1/800/600',

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { images } from '../lib/images';
@@ -181,14 +180,13 @@ const QuotePage: React.FC<QuotePageProps> = ({ onNavigate, preSelectedAircraftId
                     </div>
 
                     {/* Right Column: Image Carousel */}
-                    <div className="flex items-center justify-center min-h-[400px] lg:min-h-full">
-                        <div className="relative w-full h-full max-h-[600px] aspect-w-4 aspect-h-3">
+                    <div className="relative min-h-[400px] lg:min-h-0 rounded-lg shadow-2xl overflow-hidden">
                         {aircraftImages.length > 0 ? (
                             <>
                                 <img 
                                     src={aircraftImages[currentImageIndex]}
                                     alt={selectedAircraft?.name || 'Selected Aircraft'}
-                                    className="rounded-lg shadow-2xl object-cover w-full h-full" 
+                                    className="absolute inset-0 w-full h-full object-cover" 
                                 />
                                 {aircraftImages.length > 1 && (
                                     <>
@@ -202,11 +200,17 @@ const QuotePage: React.FC<QuotePageProps> = ({ onNavigate, preSelectedAircraftId
                                 )}
                             </>
                         ) : (
-                             <div className="w-full h-full bg-gray-100/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-lg flex items-center justify-center p-8">
-                                <p className="text-gray-500 dark:text-gray-400 text-center">{t.quotePage.selectAircraftPrompt}</p>
-                            </div>
+                            <>
+                                <img 
+                                    src={images.quote.placeholder}
+                                    alt={t.quotePage.selectAircraftPrompt}
+                                    className="absolute inset-0 w-full h-full object-cover"
+                                />
+                                <div className="absolute inset-0 bg-black/50 flex items-center justify-center p-8 z-10">
+                                    <p className="text-white text-center text-lg font-semibold">{t.quotePage.selectAircraftPrompt}</p>
+                                </div>
+                            </>
                         )}
-                        </div>
                     </div>
                 </div>
             </div>
