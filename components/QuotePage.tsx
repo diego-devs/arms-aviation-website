@@ -1,22 +1,154 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { images } from '../lib/images';
+import { Airport, searchAirports, getPopularAirports, PopularAirportGroup } from '../lib/airportService';
+
+// Custom hook for debouncing input
+const useDebounce = <T,>(value: T, delay: number): T => {
+    const [debouncedValue, setDebouncedValue] = useState<T>(value);
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedValue(value);
+        }, delay);
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [value, delay]);
+    return debouncedValue;
+};
+
+interface AirportInputProps {
+    id: string;
+    label: string;
+    onAirportSelect: (airport: Airport | null) => void;
+    placeholder: string;
+    required: boolean;
+}
+
+type AirportResults = Airport[] | PopularAirportGroup[];
+
+const AirportInput: React.FC<AirportInputProps> = ({ id, label, onAirportSelect, placeholder, required }) => {
+    const [query, setQuery] = useState('');
+    const [results, setResults] = useState<AirportResults>([]);
+    const [isDropdownVisible, setDropdownVisible] = useState(false);
+    const debouncedQuery = useDebounce(query, 300);
+    const wrapperRef = useRef<HTMLDivElement>(null);
+    const [popularAirports, setPopularAirports] = useState<PopularAirportGroup[]>([]);
+    const { t } = useLanguage();
+
+    useEffect(() => {
+        getPopularAirports().then(setPopularAirports).catch(console.error);
+    }, []);
+
+    useEffect(() => {
+        const fetchAirports = async () => {
+            if (debouncedQuery.length > 2) {
+                const searchResult = await searchAirports(debouncedQuery);
+                setResults(searchResult);
+                setDropdownVisible(searchResult.length > 0);
+            } else if (query.length > 0 && debouncedQuery.length <= 2) {
+                setDropdownVisible(false);
+            } else if (query.length === 0 && document.activeElement !== document.getElementById(id)) {
+                 setDropdownVisible(false);
+            }
+        };
+        fetchAirports().catch(console.error);
+    }, [debouncedQuery, query, id]);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
+                setDropdownVisible(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [wrapperRef]);
+
+    const handleSelect = (airport: Airport) => {
+        onAirportSelect(airport);
+        setQuery(`${airport.name} (${airport.iata})`);
+        setDropdownVisible(false);
+    };
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newQuery = e.target.value;
+        setQuery(newQuery);
+        onAirportSelect(null);
+        if (newQuery.length === 0) {
+            setResults(popularAirports);
+            setDropdownVisible(true);
+        }
+    };
+    
+    const handleFocus = () => {
+        if (!query) {
+            setResults(popularAirports);
+            setDropdownVisible(popularAirports.some(g => g.airports.length > 0));
+        } else if (results.length > 0) {
+            setDropdownVisible(true);
+        }
+    };
+
+    const areResultsGrouped = (res: AirportResults): res is PopularAirportGroup[] => {
+        return res.length > 0 && 'titleKey' in res[0] && Array.isArray((res[0] as PopularAirportGroup).airports);
+    };
+
+    return (
+        <div ref={wrapperRef} className="relative">
+            <label htmlFor={id} className="block text-sm font-bold uppercase text-gray-500 dark:text-gray-400 mb-2">{label}</label>
+            <input
+                id={id}
+                type="text"
+                value={query}
+                onChange={handleInputChange}
+                onFocus={handleFocus}
+                placeholder={placeholder}
+                required={required && !query.includes('(')}
+                autoComplete="off"
+                className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md p-3 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
+            />
+            {isDropdownVisible && results.length > 0 && (
+                <ul className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                    {areResultsGrouped(results) ? (
+                        results.map(group => (
+                            <React.Fragment key={group.titleKey}>
+                                <li className="px-4 py-2 text-xs font-bold uppercase text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-900/50 sticky top-0">{t.quotePage.popularAirports[group.titleKey]}</li>
+                                {group.airports.map(airport => (
+                                    <li
+                                        key={airport.iata}
+                                        onClick={() => handleSelect(airport)}
+                                        className="px-4 py-2 cursor-pointer hover:bg-amber-100 dark:hover:bg-amber-800/20 text-sm"
+                                    >
+                                        <div className="font-semibold">{airport.name} ({airport.iata})</div>
+                                        <div className="text-xs text-gray-500 dark:text-gray-400">{airport.city}, {airport.country}</div>
+                                    </li>
+                                ))}
+                            </React.Fragment>
+                        ))
+                    ) : (
+                        (results as Airport[]).map(airport => (
+                             <li
+                                key={airport.iata}
+                                onClick={() => handleSelect(airport)}
+                                className="px-4 py-2 cursor-pointer hover:bg-amber-100 dark:hover:bg-amber-800/20 text-sm"
+                            >
+                                <div className="font-semibold">{airport.name} ({airport.iata})</div>
+                                <div className="text-xs text-gray-500 dark:text-gray-400">{airport.city}, {airport.country}</div>
+                            </li>
+                        ))
+                    )}
+                </ul>
+            )}
+        </div>
+    );
+};
+
 
 interface QuotePageProps {
     onNavigate: (page: 'home') => void;
     preSelectedAircraftId?: string;
 }
-
-const mexicanAirports = [
-    { code: 'TLC', name: 'Toluca (Licenciado Adolfo López Mateos)' },
-    { code: 'GDL', name: 'Guadalajara (Miguel Hidalgo y Costilla)' },
-    { code: 'MTY', name: 'Monterrey (General Mariano Escobedo)' },
-    { code: 'MEX', name: 'Mexico City (Benito Juárez)' },
-    { code: 'CUN', name: 'Cancún' },
-    { code: 'TIJ', name: 'Tijuana (General Abelardo L. Rodríguez)' },
-    { code: 'SJD', name: 'Los Cabos' },
-    { code: 'PVR', name: 'Puerto Vallarta (Licenciado Gustavo Díaz Ordaz)' },
-];
 
 const QuotePage: React.FC<QuotePageProps> = ({ onNavigate, preSelectedAircraftId }) => {
     const { t } = useLanguage();
@@ -26,13 +158,14 @@ const QuotePage: React.FC<QuotePageProps> = ({ onNavigate, preSelectedAircraftId
     }));
 
     const [selectedAircraftId, setSelectedAircraftId] = useState<string>(preSelectedAircraftId || '');
-    const [origin, setOrigin] = useState('');
-    const [destination, setDestination] = useState('');
+    const [origin, setOrigin] = useState<Airport | null>(null);
+    const [destination, setDestination] = useState<Airport | null>(null);
     const [travelDate, setTravelDate] = useState('');
     const [numPassengers, setNumPassengers] = useState('1');
     const [flightType, setFlightType] = useState<'one-way' | 'round-trip'>('one-way');
     const [passengerName, setPassengerName] = useState('');
     const [passengerEmail, setPassengerEmail] = useState('');
+    const [passengerPhone, setPassengerPhone] = useState('');
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     
     const selectedAircraft = allAircraft.find((a: any) => a.id === selectedAircraftId);
@@ -62,25 +195,31 @@ const QuotePage: React.FC<QuotePageProps> = ({ onNavigate, preSelectedAircraftId
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         
-        const selectedAircraftInfo = allAircraft.find((a: any) => a.id === selectedAircraftId);
-        if (!selectedAircraftInfo) {
-            alert(t.quotePage.selectAircraft);
+        if (!selectedAircraftId || !origin || !destination) {
+            alert('Please fill all required fields');
             return;
         }
 
-        const originAirport = mexicanAirports.find(a => a.code === origin);
-        const destinationAirport = mexicanAirports.find(a => a.code === destination);
+        const selectedAircraftInfo = allAircraft.find((a: any) => a.id === selectedAircraftId);
+        
+        const aircraftName = selectedAircraftId === 'other' 
+            ? t.quotePage.otherAircraft 
+            : selectedAircraftInfo?.name;
+        
+        const originText = `${origin.name} (${origin.iata})`;
+        const destinationText = `${destination.name} (${destination.iata})`;
 
         const messageParts = [
             `*${t.quotePage.whatsappMessage.title}*`,
             '',
             `*${t.quotePage.whatsappMessage.passengerName}:* ${passengerName}`,
             `*${t.quotePage.whatsappMessage.passengerEmail}:* ${passengerEmail}`,
-            `*${t.quotePage.whatsappMessage.aircraft}:* ${selectedAircraftInfo.name}`,
+            `*${t.quotePage.whatsappMessage.passengerPhone}:* ${passengerPhone}`,
+            `*${t.quotePage.whatsappMessage.aircraft}:* ${aircraftName}`,
             `*${t.quotePage.whatsappMessage.flightType}:* ${flightType === 'one-way' ? t.quotePage.oneWay : t.quotePage.roundTrip}`,
             `*${t.quotePage.whatsappMessage.numPassengers}:* ${numPassengers}`,
-            `*${t.quotePage.whatsappMessage.origin}:* ${originAirport?.name} (${origin})`,
-            `*${t.quotePage.whatsappMessage.destination}:* ${destinationAirport?.name} (${destination})`,
+            `*${t.quotePage.whatsappMessage.origin}:* ${originText}`,
+            `*${t.quotePage.whatsappMessage.destination}:* ${destinationText}`,
             `*${t.quotePage.whatsappMessage.date}:* ${travelDate}`
         ];
 
@@ -90,7 +229,7 @@ const QuotePage: React.FC<QuotePageProps> = ({ onNavigate, preSelectedAircraftId
 
         window.open(whatsappUrl, '_blank');
     };
-
+    
     return (
         <div className="bg-transparent min-h-screen text-gray-800 dark:text-gray-200 pt-24 md:pt-32 pb-20">
             <div className="container mx-auto px-6">
@@ -113,6 +252,10 @@ const QuotePage: React.FC<QuotePageProps> = ({ onNavigate, preSelectedAircraftId
                                 <input type="email" id="passenger-email" value={passengerEmail} onChange={(e) => setPassengerEmail(e.target.value)} required className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md p-3 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-500" />
                             </div>
                              <div>
+                                <label htmlFor="passenger-phone" className="block text-sm font-bold uppercase text-gray-500 dark:text-gray-400 mb-2">{t.quotePage.passengerPhone}</label>
+                                <input type="tel" id="passenger-phone" value={passengerPhone} onChange={(e) => setPassengerPhone(e.target.value)} required className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md p-3 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-500" />
+                            </div>
+                             <div>
                                 <label htmlFor="aircraft-type" className="block text-sm font-bold uppercase text-gray-500 dark:text-gray-400 mb-2">{t.quotePage.aircraftType}</label>
                                 <select 
                                     id="aircraft-type" 
@@ -125,6 +268,7 @@ const QuotePage: React.FC<QuotePageProps> = ({ onNavigate, preSelectedAircraftId
                                     {allAircraft.map((craft: any) => (
                                         <option key={craft.id} value={craft.id}>{craft.name}</option>
                                     ))}
+                                    <option value="other">{t.quotePage.otherAircraft}</option>
                                 </select>
                             </div>
                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -148,24 +292,20 @@ const QuotePage: React.FC<QuotePageProps> = ({ onNavigate, preSelectedAircraftId
                             </div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                <div>
-                                    <label htmlFor="origin" className="block text-sm font-bold uppercase text-gray-500 dark:text-gray-400 mb-2">{t.quotePage.origin}</label>
-                                    <select id="origin" required value={origin} onChange={e => setOrigin(e.target.value)} className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md p-3 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-500">
-                                        <option value="">{t.quotePage.selectAirport}</option>
-                                        {mexicanAirports.map(airport => (
-                                            <option key={airport.code} value={airport.code}>{airport.name} - {airport.code}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div>
-                                    <label htmlFor="destination" className="block text-sm font-bold uppercase text-gray-500 dark:text-gray-400 mb-2">{t.quotePage.destination}</label>
-                                    <select id="destination" required value={destination} onChange={e => setDestination(e.target.value)} className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md p-3 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-500">
-                                        <option value="">{t.quotePage.selectAirport}</option>
-                                        {mexicanAirports.map(airport => (
-                                            <option key={airport.code} value={airport.code}>{airport.name} - {airport.code}</option>
-                                        ))}
-                                    </select>
-                                </div>
+                               <AirportInput 
+                                    id="origin"
+                                    label={t.quotePage.origin}
+                                    onAirportSelect={setOrigin}
+                                    placeholder={t.quotePage.selectAnAirport}
+                                    required
+                               />
+                               <AirportInput 
+                                    id="destination"
+                                    label={t.quotePage.destination}
+                                    onAirportSelect={setDestination}
+                                    placeholder={t.quotePage.selectAnAirport}
+                                    required
+                               />
                             </div>
                             
                             <div>

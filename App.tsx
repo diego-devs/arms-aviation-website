@@ -1,5 +1,5 @@
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Services from './components/Services';
@@ -17,21 +17,50 @@ import PrivacyPage from './components/PrivacyPage';
 
 export type Page = 'home' | 'quote' | 'about' | 'terms' | 'privacy';
 
-const lightBgUrl = "https://images.unsplash.com/photo-1540962351504-03099e0a754b?q=80&w=1548&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
-const darkBgUrl = "https://images.unsplash.com/photo-1474302770737-173ee21bab63?q=80&w=1808&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+const lightBgUrls = [
+    "https://images.unsplash.com/photo-1540962351504-03099e0a754b?q=80&w=1548&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://images.unsplash.com/photo-1619651565842-6db8f969fd39?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://images.unsplash.com/photo-1684838200815-36eef38f353c?q=80&w=1835&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+];
+const darkBgUrls = [
+    "https://images.unsplash.com/photo-1474302770737-173ee21bab63?q=80&w=1808&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://images.unsplash.com/photo-1566212774954-4c48b5052304?q=80&w=1752&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://images.unsplash.com/photo-1566212774847-025968e5bf56?q=80&w=1752&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+];
 
 const ThemedBackground: React.FC = () => {
     const { theme } = useTheme();
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const imageUrls = theme === 'light' ? lightBgUrls : darkBgUrls;
+    
+    useEffect(() => {
+        // Reset index when theme changes to start the new gallery from the beginning
+        setCurrentIndex(0);
+    }, [theme]);
+
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setCurrentIndex((prevIndex) => (prevIndex + 1) % imageUrls.length);
+        }, 7000); // Change image every 7 seconds
+
+        return () => clearTimeout(timer);
+    }, [currentIndex, imageUrls.length]);
+
     return (
-        <div className="fixed inset-0 z-[-1]">
-            <div
-                className="absolute inset-0 bg-cover bg-center bg-fixed transition-opacity duration-1000"
-                style={{ backgroundImage: `url('${lightBgUrl}')`, opacity: theme === 'light' ? 1 : 0 }}
-            />
-            <div
-                className="absolute inset-0 bg-cover bg-center bg-fixed transition-opacity duration-1000"
-                style={{ backgroundImage: `url('${darkBgUrl}')`, opacity: theme === 'dark' ? 1 : 0 }}
-            />
+        <div className="fixed inset-0 z-[-1] bg-black">
+            {imageUrls.map((url, index) => (
+                <div
+                    key={url}
+                    className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000"
+                    style={{
+                        backgroundImage: `url('${url}')`,
+                        opacity: index === currentIndex ? 1 : 0,
+                        animation: index === currentIndex ? 'kenburns-zoom 20s ease-out forwards' : 'none',
+                    }}
+                />
+            ))}
             <div className="absolute inset-0 bg-white/20 dark:bg-black/50" />
         </div>
     );
