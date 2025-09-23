@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { ArmsAviationLogo } from './icons/Logo';
+import { logoUrl } from '../lib/images';
 
 interface WhatsAppModalProps {
     isOpen: boolean;
@@ -86,8 +86,8 @@ const WhatsAppModal: React.FC<WhatsAppModalProps> = ({ isOpen, onClose, onSend }
                 <div className="bg-white dark:bg-gray-800 rounded-t-lg sm:rounded-lg shadow-2xl flex flex-col h-[60vh] sm:h-[500px] max-h-[90vh] overflow-hidden">
                     <header className="flex items-center justify-between p-4 bg-gray-100 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
                         <div className="flex items-center space-x-3">
-                             <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center p-1">
-                                <ArmsAviationLogo className="h-8 object-contain" />
+                             <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center p-1">
+                                <img src={logoUrl} alt="ARMS AVIATION Logo" className="h-8 object-contain" />
                             </div>
                             <div>
                                 <h3 className="font-bold text-gray-800 dark:text-gray-100">ARMS AVIATION</h3>

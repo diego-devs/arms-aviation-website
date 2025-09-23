@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { images } from '../lib/images';
 import { Airport, searchAirports, getPopularAirports, PopularAirportGroup } from '../lib/airportService';
@@ -113,7 +113,7 @@ const AirportInput: React.FC<AirportInputProps> = ({ id, label, onAirportSelect,
                     {areResultsGrouped(results) ? (
                         results.map(group => (
                             <React.Fragment key={group.titleKey}>
-                                <li className="px-4 py-2 text-xs font-bold uppercase text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-900/50 sticky top-0">{t.quotePage.popularAirports[group.titleKey]}</li>
+                                <li className="px-4 py-2 text-xs font-bold uppercase text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-900/50 sticky top-0">{t.quotePage.popularAirports[group.titleKey as keyof typeof t.quotePage.popularAirports]}</li>
                                 {group.airports.map(airport => (
                                     <li
                                         key={airport.iata}
@@ -156,6 +156,22 @@ const QuotePage: React.FC<QuotePageProps> = ({ onNavigate, preSelectedAircraftId
         ...craft,
         images: images.fleet[craft.id as keyof typeof images.fleet] || []
     }));
+
+    const groupedAircraft = useMemo(() => {
+        return allAircraft.reduce((acc: { [key: string]: any[] }, aircraft: any) => {
+            // FIX: The cast `as keyof typeof t.fleet.brands` was incorrect because `t` is `any`,
+            // which resulted in `brandKey` having a type of `string | number | symbol`, causing indexing errors.
+            // `aircraft.brand` is already a string.
+            const brandKey = aircraft.brand;
+            if (!acc[brandKey]) {
+                acc[brandKey] = [];
+            }
+            acc[brandKey].push(aircraft);
+            return acc;
+        }, {} as { [key: string]: any[] });
+    }, [allAircraft]);
+
+    const aircraftBrands = Object.keys(groupedAircraft);
 
     const [selectedAircraftId, setSelectedAircraftId] = useState<string>(preSelectedAircraftId || '');
     const [origin, setOrigin] = useState<Airport | null>(null);
@@ -265,8 +281,15 @@ const QuotePage: React.FC<QuotePageProps> = ({ onNavigate, preSelectedAircraftId
                                     className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md p-3 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
                                 >
                                     <option value="">{t.quotePage.selectAircraft}</option>
-                                    {allAircraft.map((craft: any) => (
-                                        <option key={craft.id} value={craft.id}>{craft.name}</option>
+                                    {aircraftBrands.map((brandKey) => (
+                                        // FIX: Removed incorrect type cast `as keyof typeof t.fleet.brands`.
+                                        // With `brandKey` correctly typed as a string, this direct access is safe and correct.
+                                        // This resolves all three reported errors.
+                                        <optgroup key={brandKey} label={t.fleet.brands[brandKey]}>
+                                            {groupedAircraft[brandKey].map((craft: any) => (
+                                                <option key={craft.id} value={craft.id}>{craft.name}</option>
+                                            ))}
+                                        </optgroup>
                                     ))}
                                     <option value="other">{t.quotePage.otherAircraft}</option>
                                 </select>

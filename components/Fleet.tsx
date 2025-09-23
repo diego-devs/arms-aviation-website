@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Page } from '../App';
@@ -82,7 +83,7 @@ const Fleet: React.FC<FleetProps> = ({ onNavigate }) => {
                     ))}
                 </div>
 
-                <div className="mt-4 relative max-w-5xl mx-auto">
+                <div className="mt-4 relative max-w-7xl mx-auto">
                     {currentAircraft ? (
                         <>
                             <div className="relative h-[34rem] w-full overflow-hidden rounded-lg shadow-2xl">

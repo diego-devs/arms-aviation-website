@@ -1,7 +1,8 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Page } from '../App';
 import { images } from '../lib/images';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface AboutPageProps {
     onNavigate: (page: Page) => void;
@@ -9,19 +10,36 @@ interface AboutPageProps {
 
 const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
     const { t } = useLanguage();
+    const { theme } = useTheme();
     const [currentIndex, setCurrentIndex] = useState(0);
+
+    const galleryImages = useMemo(() => {
+        const originalImages = [...images.about];
+        if (theme === 'dark') {
+            const lastImage = originalImages.pop();
+            if (lastImage) {
+                originalImages.unshift(lastImage);
+            }
+        }
+        return originalImages;
+    }, [theme]);
+
+    useEffect(() => {
+        setCurrentIndex(0);
+    }, [theme]);
+
 
     const prevSlide = useCallback(() => {
         const isFirstSlide = currentIndex === 0;
-        const newIndex = isFirstSlide ? images.about.length - 1 : currentIndex - 1;
+        const newIndex = isFirstSlide ? galleryImages.length - 1 : currentIndex - 1;
         setCurrentIndex(newIndex);
-    }, [currentIndex]);
+    }, [currentIndex, galleryImages.length]);
 
     const nextSlide = useCallback(() => {
-        const isLastSlide = currentIndex === images.about.length - 1;
+        const isLastSlide = currentIndex === galleryImages.length - 1;
         const newIndex = isLastSlide ? 0 : currentIndex + 1;
         setCurrentIndex(newIndex);
-    }, [currentIndex]);
+    }, [currentIndex, galleryImages.length]);
 
     return (
         <div className="bg-transparent min-h-screen text-gray-800 dark:text-gray-200 pt-24 md:pt-32 pb-20">
@@ -49,9 +67,9 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
                     </div>
                     <div className="lg:w-2/5 mt-12 lg:mt-0 relative w-full min-h-[34rem] rounded-lg overflow-hidden shadow-2xl">
                          {/* Images with transitions */}
-                         {images.about.map((src, index) => (
+                         {galleryImages.map((src, index) => (
                             <img
-                                key={index}
+                                key={src}
                                 src={src}
                                 alt={`About ARMS AVIATION ${index + 1}`}
                                 className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${index === currentIndex ? 'opacity-100' : 'opacity-0'}`}
@@ -68,7 +86,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
 
                         {/* Dots */}
                         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex space-x-2">
-                            {images.about.map((_, index) => (
+                            {galleryImages.map((_, index) => (
                                 <button key={index} onClick={() => setCurrentIndex(index)} className={`w-3 h-3 rounded-full transition-colors ${index === currentIndex ? 'bg-amber-500' : 'bg-gray-300 dark:bg-gray-600 hover:bg-amber-400'}`}></button>
                             ))}
                         </div>

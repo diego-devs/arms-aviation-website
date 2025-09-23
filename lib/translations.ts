@@ -88,6 +88,10 @@ export const translations = {
     subtitle: { en: 'Your next journey begins here. Get a personalized quote for your trip.', es: 'Su próximo viaje comienza aquí. Obtenga una cotización personalizada para su viaje.' },
     button: { en: 'Plan Your Flight', es: 'Planifique Su Vuelo' },
   },
+  gallerySection: {
+    title: { en: 'Explore Our World', es: 'Explore Nuestro Mundo' },
+    subtitle: { en: 'A glimpse into the exclusive experiences we curate for our clients.', es: 'Una mirada a las experiencias exclusivas que creamos para nuestros clientes.' },
+  },
   footer: {
     about: { en: 'Your premier partner in luxury private aviation. Delivering excellence in the sky.', es: 'Su socio principal en aviación privada de lujo. Entregando excelencia en el cielo.' },
     quickLinks: { en: 'Quick Links', es: 'Enlaces Rápidos' },
