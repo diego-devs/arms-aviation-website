@@ -18,7 +18,7 @@ const CtaSection: React.FC<CtaSectionProps> = ({ onNavigate }) => {
                 </p>
                 <button
                     onClick={() => onNavigate('quote')}
-                    className="mt-8 inline-block bg-amber-500 text-white font-bold uppercase tracking-wider py-4 px-10 rounded-sm hover:bg-amber-600 transition-all duration-300 shadow-lg text-lg"
+                    className="mt-8 inline-block bg-yellow-600 text-white font-bold uppercase tracking-wider py-4 px-10 rounded-sm hover:bg-yellow-700 transition-all duration-300 shadow-lg text-lg"
                 >
                     {t.cta.button}
                 </button>

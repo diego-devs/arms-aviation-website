@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { logoUrl } from '../lib/images';
@@ -83,8 +84,8 @@ const WhatsAppModal: React.FC<WhatsAppModalProps> = ({ isOpen, onClose, onSend }
             <div className="fixed inset-0 bg-black/30 backdrop-blur-sm" onClick={handleClose}></div>
 
             <div className={`relative z-10 w-full max-w-sm transform transition-all duration-300 ease-out ${modalClasses}`}>
-                <div className="bg-white dark:bg-gray-800 rounded-t-lg sm:rounded-lg shadow-2xl flex flex-col h-[60vh] sm:h-[500px] max-h-[90vh] overflow-hidden">
-                    <header className="flex items-center justify-between p-4 bg-gray-100 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
+                <div className="bg-white dark:bg-gray-900 rounded-t-lg sm:rounded-lg shadow-2xl flex flex-col h-[60vh] sm:h-[500px] max-h-[90vh] overflow-hidden">
+                    <header className="flex items-center justify-between p-4 bg-gray-100 dark:bg-black/80 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
                         <div className="flex items-center space-x-3">
                              <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center p-1">
                                 <img src={logoUrl} alt="ARMS AVIATION Logo" className="h-8 object-contain" />
@@ -99,13 +100,13 @@ const WhatsAppModal: React.FC<WhatsAppModalProps> = ({ isOpen, onClose, onSend }
                         </button>
                     </header>
                     
-                    <div className="flex-1 p-4 bg-gray-50 dark:bg-gray-700/50 overflow-y-auto">
-                        <div className="bg-amber-100/50 dark:bg-amber-500/10 p-3 rounded-lg text-sm text-gray-700 dark:text-gray-300">
+                    <div className="flex-1 p-4 bg-gray-50 dark:bg-gray-800/50 overflow-y-auto">
+                        <div className="bg-slate-200/50 dark:bg-slate-600/10 p-3 rounded-lg text-sm text-gray-700 dark:text-gray-300">
                            {t.whatsapp.modal.greeting}
                         </div>
                     </div>
                     
-                    <footer className="p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+                    <footer className="p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
                         <div className="flex items-center space-x-3">
                             <textarea
                                 ref={textareaRef}
@@ -115,11 +116,11 @@ const WhatsAppModal: React.FC<WhatsAppModalProps> = ({ isOpen, onClose, onSend }
                                 placeholder={t.whatsapp.modal.placeholder}
                                 rows={1}
                                 style={{maxHeight: '100px'}}
-                                className="flex-1 resize-none bg-gray-100 dark:bg-gray-700 border-transparent rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm text-gray-800 dark:text-gray-200"
+                                className="flex-1 resize-none bg-gray-100 dark:bg-gray-800 border-transparent rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-slate-500 text-sm text-gray-800 dark:text-gray-200"
                             />
                             <button 
                                 onClick={handleSendClick}
-                                className="bg-amber-500 text-white rounded-full h-10 w-10 flex-shrink-0 flex items-center justify-center hover:bg-amber-600 transition-colors disabled:bg-amber-500/50 disabled:cursor-not-allowed"
+                                className="bg-yellow-600 text-white rounded-full h-10 w-10 flex-shrink-0 flex items-center justify-center hover:bg-yellow-700 transition-colors disabled:bg-yellow-600/50 disabled:cursor-not-allowed"
                                 disabled={!message.trim()}
                                 aria-label={t.whatsapp.modal.send}
                             >

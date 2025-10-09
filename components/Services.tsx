@@ -30,7 +30,7 @@ const Services: React.FC = () => {
     }));
 
     return (
-        <section id="services" className="py-20 bg-gray-50/80 dark:bg-gray-900/70 backdrop-blur-md">
+        <section id="services" className="py-20 bg-gray-50/80 dark:bg-black/80 backdrop-blur-md">
             <div className="container mx-auto px-6">
                 <h2 className="text-3xl md:text-4xl font-black text-center uppercase tracking-widest text-gray-900 dark:text-gray-100">{t.services.title}</h2>
                 <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

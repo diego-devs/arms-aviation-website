@@ -25,7 +25,7 @@ const GallerySection: React.FC = () => {
     }, [currentIndex, nextSlide]);
 
     return (
-        <section id="gallery" className="py-20 bg-white/80 dark:bg-gray-800/70 backdrop-blur-md">
+        <section id="gallery" className="py-20 bg-white/80 dark:bg-black/80 backdrop-blur-md">
             <div className="container mx-auto px-6">
                 <div className="text-center mb-12">
                     <h2 className="text-3xl md:text-4xl font-black uppercase tracking-widest text-gray-900 dark:text-gray-100">
@@ -62,7 +62,7 @@ const GallerySection: React.FC = () => {
                             <button 
                                 key={index} 
                                 onClick={() => setCurrentIndex(index)} 
-                                className={`w-3 h-3 rounded-full transition-colors ${index === currentIndex ? 'bg-amber-500' : 'bg-gray-300 dark:bg-gray-600 hover:bg-amber-400'}`}
+                                className={`w-3 h-3 rounded-full transition-colors ${index === currentIndex ? 'bg-slate-700 dark:bg-slate-300' : 'bg-gray-300 dark:bg-gray-600 hover:bg-slate-500 dark:hover:bg-slate-400'}`}
                                 aria-label={`Go to image ${index + 1}`}
                             ></button>
                         ))}

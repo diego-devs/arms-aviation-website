@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-const iconClass = "h-8 w-8 text-amber-500";
+const iconClass = "h-8 w-8 text-slate-700 dark:text-slate-300";
 
 export const ShieldIcon: React.FC = () => (
     <svg xmlns="http://www.w3.org/2000/svg" className={iconClass} fill="none" viewBox="0 0 24 24" stroke="currentColor">

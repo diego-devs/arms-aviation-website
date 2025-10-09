@@ -62,7 +62,7 @@ const ThemedBackground: React.FC = () => {
                     }}
                 />
             ))}
-            <div className="absolute inset-0 bg-white/20 dark:bg-black/50" />
+            <div className="absolute inset-0 bg-white/20 dark:bg-black/60" />
         </div>
     );
 }

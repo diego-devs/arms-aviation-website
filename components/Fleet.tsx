@@ -67,7 +67,7 @@ const Fleet: React.FC<FleetProps> = ({ onNavigate }) => {
     const currentAircraft = activeFleet[currentIndex];
 
     return (
-        <section id="fleet" className="py-20 bg-gray-50/80 dark:bg-gray-900/70 backdrop-blur-md">
+        <section id="fleet" className="py-20 bg-gray-50/80 dark:bg-black/80 backdrop-blur-md">
             <div className="container mx-auto px-6">
                 <h2 className="text-3xl md:text-4xl font-black text-center uppercase tracking-widest text-gray-900 dark:text-gray-100">{t.fleet.title}</h2>
                 
@@ -76,7 +76,7 @@ const Fleet: React.FC<FleetProps> = ({ onNavigate }) => {
                         <button
                             key={brandKey}
                             onClick={() => setActiveBrand(brandKey)}
-                            className={`px-4 py-2 text-sm font-semibold rounded-full transition-all duration-300 ${activeBrand === brandKey ? 'bg-amber-500 text-white shadow-md' : 'bg-white/50 dark:bg-gray-800/50 hover:bg-amber-100 dark:hover:bg-gray-700'}`}
+                            className={`px-4 py-2 text-sm font-semibold rounded-full transition-all duration-300 ${activeBrand === brandKey ? 'bg-slate-700 dark:bg-slate-300 text-white dark:text-slate-900 shadow-md' : 'bg-white/50 dark:bg-gray-900/50 hover:bg-slate-200 dark:hover:bg-gray-700'}`}
                         >
                             {t.fleet.brands[brandKey as keyof typeof t.fleet.brands]}
                         </button>
@@ -100,12 +100,12 @@ const Fleet: React.FC<FleetProps> = ({ onNavigate }) => {
                                     <h3 className="text-3xl md:text-4xl font-bold">{currentAircraft.name}</h3>
                                     <p className="mt-2 max-w-2xl text-gray-300">{currentAircraft.description}</p>
                                     <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm md:text-base">
-                                        <div><span className="font-bold text-amber-400">{t.fleet.capacity}:</span> {currentAircraft.capacity}</div>
-                                        <div><span className="font-bold text-amber-400">{t.fleet.highlights}:</span> {currentAircraft.highlights}</div>
+                                        <div><span className="font-bold text-slate-400">{t.fleet.capacity}:</span> {currentAircraft.capacity}</div>
+                                        <div><span className="font-bold text-slate-400">{t.fleet.highlights}:</span> {currentAircraft.highlights}</div>
                                     </div>
                                     <button
                                         onClick={handleSelectAircraft}
-                                        className="mt-6 inline-block bg-amber-500 text-white font-bold uppercase tracking-wider py-2 px-6 rounded-sm hover:bg-amber-600 transition-all duration-300 shadow-lg text-sm"
+                                        className="mt-6 inline-block bg-yellow-600 text-white font-bold uppercase tracking-wider py-2 px-6 rounded-sm hover:bg-yellow-700 transition-all duration-300 shadow-lg text-sm"
                                     >
                                         {t.fleet.selectAircraftCta}
                                     </button>
@@ -123,7 +123,7 @@ const Fleet: React.FC<FleetProps> = ({ onNavigate }) => {
                             {/* Dots */}
                             <div className="flex justify-center mt-6 space-x-2">
                                 {activeFleet.map((_: any, index: number) => (
-                                    <button key={index} onClick={() => setCurrentIndex(index)} className={`w-3 h-3 rounded-full transition-colors ${index === currentIndex ? 'bg-amber-500' : 'bg-gray-300 dark:bg-gray-600 hover:bg-amber-400'}`}></button>
+                                    <button key={index} onClick={() => setCurrentIndex(index)} className={`w-3 h-3 rounded-full transition-colors ${index === currentIndex ? 'bg-slate-700 dark:bg-slate-300' : 'bg-gray-300 dark:bg-gray-600 hover:bg-slate-500 dark:hover:bg-slate-400'}`}></button>
                                 ))}
                             </div>
                         </>

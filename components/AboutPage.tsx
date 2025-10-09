@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Page } from '../App';
@@ -44,7 +45,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
     return (
         <div className="bg-transparent min-h-screen text-gray-800 dark:text-gray-200 pt-24 md:pt-32 pb-20">
             <div className="container mx-auto px-6">
-                <button onClick={() => onNavigate('home')} className="mb-8 text-amber-500 hover:text-amber-600 transition-colors font-semibold">
+                <button onClick={() => onNavigate('home')} className="mb-8 text-slate-600 dark:text-slate-300 hover:text-slate-700 dark:hover:text-slate-100 transition-colors font-semibold">
                     &larr; {t.aboutPage.backToHome}
                 </button>
                 <div className="text-center mb-12">
@@ -56,12 +57,12 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
 
                 <div className="max-w-6xl mx-auto lg:flex lg:gap-12">
                     <div className="lg:w-3/5 flex flex-col gap-8">
-                        <div className="bg-gray-50/80 dark:bg-gray-800/80 backdrop-blur-md p-8 rounded-lg border border-gray-200/50 dark:border-gray-700/50">
-                            <h2 className="text-3xl font-bold uppercase tracking-wider text-amber-500 mb-4">{t.aboutPage.missionTitle}</h2>
+                        <div className="bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-md p-8 rounded-lg border border-gray-200/50 dark:border-gray-700/50">
+                            <h2 className="text-3xl font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-4">{t.aboutPage.missionTitle}</h2>
                             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{t.aboutPage.missionText}</p>
                         </div>
-                        <div className="bg-gray-50/80 dark:bg-gray-800/80 backdrop-blur-md p-8 rounded-lg border border-gray-200/50 dark:border-gray-700/50">
-                            <h2 className="text-3xl font-bold uppercase tracking-wider text-amber-500 mb-4">{t.aboutPage.visionTitle}</h2>
+                        <div className="bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-md p-8 rounded-lg border border-gray-200/50 dark:border-gray-700/50">
+                            <h2 className="text-3xl font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-4">{t.aboutPage.visionTitle}</h2>
                             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{t.aboutPage.visionText}</p>
                         </div>
                     </div>
@@ -87,7 +88,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
                         {/* Dots */}
                         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex space-x-2">
                             {galleryImages.map((_, index) => (
-                                <button key={index} onClick={() => setCurrentIndex(index)} className={`w-3 h-3 rounded-full transition-colors ${index === currentIndex ? 'bg-amber-500' : 'bg-gray-300 dark:bg-gray-600 hover:bg-amber-400'}`}></button>
+                                <button key={index} onClick={() => setCurrentIndex(index)} className={`w-3 h-3 rounded-full transition-colors ${index === currentIndex ? 'bg-slate-700 dark:bg-slate-300' : 'bg-gray-300 dark:bg-gray-600 hover:bg-slate-500 dark:hover:bg-slate-400'}`}></button>
                             ))}
                         </div>
                     </div>

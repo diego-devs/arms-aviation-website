@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { images } from '../lib/images';
@@ -106,7 +107,7 @@ const AirportInput: React.FC<AirportInputProps> = ({ id, label, onAirportSelect,
                 placeholder={placeholder}
                 required={required && !query.includes('(')}
                 autoComplete="off"
-                className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md p-3 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                className="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md p-3 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-slate-500"
             />
             {isDropdownVisible && results.length > 0 && (
                 <ul className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-60 overflow-y-auto">
@@ -118,7 +119,7 @@ const AirportInput: React.FC<AirportInputProps> = ({ id, label, onAirportSelect,
                                     <li
                                         key={airport.iata}
                                         onClick={() => handleSelect(airport)}
-                                        className="px-4 py-2 cursor-pointer hover:bg-amber-100 dark:hover:bg-amber-800/20 text-sm"
+                                        className="px-4 py-2 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700/20 text-sm"
                                     >
                                         <div className="font-semibold">{airport.name} ({airport.iata})</div>
                                         <div className="text-xs text-gray-500 dark:text-gray-400">{airport.city}, {airport.country}</div>
@@ -131,7 +132,7 @@ const AirportInput: React.FC<AirportInputProps> = ({ id, label, onAirportSelect,
                              <li
                                 key={airport.iata}
                                 onClick={() => handleSelect(airport)}
-                                className="px-4 py-2 cursor-pointer hover:bg-amber-100 dark:hover:bg-amber-800/20 text-sm"
+                                className="px-4 py-2 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700/20 text-sm"
                             >
                                 <div className="font-semibold">{airport.name} ({airport.iata})</div>
                                 <div className="text-xs text-gray-500 dark:text-gray-400">{airport.city}, {airport.country}</div>
@@ -249,27 +250,27 @@ const QuotePage: React.FC<QuotePageProps> = ({ onNavigate, preSelectedAircraftId
     return (
         <div className="bg-transparent min-h-screen text-gray-800 dark:text-gray-200 pt-24 md:pt-32 pb-20">
             <div className="container mx-auto px-6">
-                <button onClick={() => onNavigate('home')} className="mb-8 text-amber-500 hover:text-amber-600 transition-colors font-semibold">
+                <button onClick={() => onNavigate('home')} className="mb-8 text-slate-600 dark:text-slate-300 hover:text-slate-700 dark:hover:text-slate-100 transition-colors font-semibold">
                     &larr; {t.quotePage.backToHome}
                 </button>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                     {/* Left Column: Form */}
-                    <div className="bg-gray-50/80 dark:bg-gray-800/80 backdrop-blur-md p-8 rounded-lg border border-gray-200/50 dark:border-gray-700/50">
+                    <div className="bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-md p-8 rounded-lg border border-gray-200/50 dark:border-gray-700/50">
                         <h1 className="text-3xl md:text-4xl font-black uppercase tracking-widest text-gray-900 dark:text-gray-100 mb-8">
                             {t.quotePage.title}
                         </h1>
                         <form onSubmit={handleSubmit} className="space-y-6">
                              <div>
                                 <label htmlFor="passenger-name" className="block text-sm font-bold uppercase text-gray-500 dark:text-gray-400 mb-2">{t.quotePage.passengerName}</label>
-                                <input type="text" id="passenger-name" value={passengerName} onChange={(e) => setPassengerName(e.target.value)} required className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md p-3 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-500" />
+                                <input type="text" id="passenger-name" value={passengerName} onChange={(e) => setPassengerName(e.target.value)} required className="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md p-3 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-slate-500" />
                             </div>
                             <div>
                                 <label htmlFor="passenger-email" className="block text-sm font-bold uppercase text-gray-500 dark:text-gray-400 mb-2">{t.quotePage.passengerEmail}</label>
-                                <input type="email" id="passenger-email" value={passengerEmail} onChange={(e) => setPassengerEmail(e.target.value)} required className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md p-3 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-500" />
+                                <input type="email" id="passenger-email" value={passengerEmail} onChange={(e) => setPassengerEmail(e.target.value)} required className="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md p-3 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-slate-500" />
                             </div>
                              <div>
                                 <label htmlFor="passenger-phone" className="block text-sm font-bold uppercase text-gray-500 dark:text-gray-400 mb-2">{t.quotePage.passengerPhone}</label>
-                                <input type="tel" id="passenger-phone" value={passengerPhone} onChange={(e) => setPassengerPhone(e.target.value)} required className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md p-3 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-500" />
+                                <input type="tel" id="passenger-phone" value={passengerPhone} onChange={(e) => setPassengerPhone(e.target.value)} required className="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md p-3 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-slate-500" />
                             </div>
                              <div>
                                 <label htmlFor="aircraft-type" className="block text-sm font-bold uppercase text-gray-500 dark:text-gray-400 mb-2">{t.quotePage.aircraftType}</label>
@@ -278,7 +279,7 @@ const QuotePage: React.FC<QuotePageProps> = ({ onNavigate, preSelectedAircraftId
                                     value={selectedAircraftId}
                                     onChange={handleAircraftChange}
                                     required
-                                    className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md p-3 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                                    className="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md p-3 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-slate-500"
                                 >
                                     <option value="">{t.quotePage.selectAircraft}</option>
                                     {aircraftBrands.map((brandKey) => (
@@ -297,20 +298,20 @@ const QuotePage: React.FC<QuotePageProps> = ({ onNavigate, preSelectedAircraftId
                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                 <div>
                                     <label className="block text-sm font-bold uppercase text-gray-500 dark:text-gray-400 mb-2">{t.quotePage.flightType}</label>
-                                    <div className="flex items-center space-x-6 mt-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md p-3">
+                                    <div className="flex items-center space-x-6 mt-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md p-3">
                                         <label className="flex items-center text-gray-800 dark:text-gray-200 cursor-pointer">
-                                            <input type="radio" name="flight-type" value="one-way" checked={flightType === 'one-way'} onChange={() => setFlightType('one-way')} className="text-amber-500 bg-gray-100 dark:bg-gray-600 border-gray-300 dark:border-gray-500 focus:ring-amber-500" />
+                                            <input type="radio" name="flight-type" value="one-way" checked={flightType === 'one-way'} onChange={() => setFlightType('one-way')} className="text-slate-600 bg-gray-100 dark:bg-gray-600 border-gray-300 dark:border-gray-500 focus:ring-slate-500" />
                                             <span className="ml-2 text-sm">{t.quotePage.oneWay}</span>
                                         </label>
                                         <label className="flex items-center text-gray-800 dark:text-gray-200 cursor-pointer">
-                                            <input type="radio" name="flight-type" value="round-trip" checked={flightType === 'round-trip'} onChange={() => setFlightType('round-trip')} className="text-amber-500 bg-gray-100 dark:bg-gray-600 border-gray-300 dark:border-gray-500 focus:ring-amber-500" />
+                                            <input type="radio" name="flight-type" value="round-trip" checked={flightType === 'round-trip'} onChange={() => setFlightType('round-trip')} className="text-slate-600 bg-gray-100 dark:bg-gray-600 border-gray-300 dark:border-gray-500 focus:ring-slate-500" />
                                             <span className="ml-2 text-sm">{t.quotePage.roundTrip}</span>
                                         </label>
                                     </div>
                                 </div>
                                 <div>
                                     <label htmlFor="num-passengers" className="block text-sm font-bold uppercase text-gray-500 dark:text-gray-400 mb-2">{t.quotePage.numPassengers}</label>
-                                    <input type="number" id="num-passengers" value={numPassengers} onChange={(e) => setNumPassengers(e.target.value)} required min="1" className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md p-3 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-500" />
+                                    <input type="number" id="num-passengers" value={numPassengers} onChange={(e) => setNumPassengers(e.target.value)} required min="1" className="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md p-3 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-slate-500" />
                                 </div>
                             </div>
 
@@ -333,10 +334,10 @@ const QuotePage: React.FC<QuotePageProps> = ({ onNavigate, preSelectedAircraftId
                             
                             <div>
                                 <label htmlFor="date" className="block text-sm font-bold uppercase text-gray-500 dark:text-gray-400 mb-2">{t.quotePage.date}</label>
-                                <input type="date" id="date" required value={travelDate} onChange={e => setTravelDate(e.target.value)} className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md p-3 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-500 dark:[color-scheme:dark]" />
+                                <input type="date" id="date" required value={travelDate} onChange={e => setTravelDate(e.target.value)} className="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md p-3 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-slate-500 dark:[color-scheme:dark]" />
                             </div>
 
-                            <button type="submit" className="w-full bg-amber-500 text-white font-bold uppercase tracking-wider py-4 px-8 rounded-sm hover:bg-amber-600 transition-all duration-300 shadow-lg mt-4">
+                            <button type="submit" className="w-full bg-yellow-600 text-white font-bold uppercase tracking-wider py-4 px-8 rounded-sm hover:bg-yellow-700 transition-all duration-300 shadow-lg mt-4">
                                 {t.quotePage.submitButton}
                             </button>
                         </form>
