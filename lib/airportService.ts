@@ -1,3 +1,4 @@
+
 export interface Airport {
     iata: string;
     name: string;
@@ -10,9 +11,6 @@ export interface PopularAirportGroup {
     airports: Airport[];
 }
 
-let airports: Airport[] = [];
-let airportsPromise: Promise<void> | null = null;
-
 interface RawAirport {
     name: string;
     city: string;
@@ -20,43 +18,55 @@ interface RawAirport {
     iata_code: string;
 }
 
+let airports: Airport[] = [];
+let airportsPromise: Promise<void> | null = null;
 
 const loadAirports = (): Promise<void> => {
-    if (airports.length > 0) return Promise.resolve();
-    if (airportsPromise) return airportsPromise;
+    if (airports.length > 0) {
+        return Promise.resolve();
+    }
+    if (airportsPromise) {
+        return airportsPromise;
+    }
 
-    airportsPromise = fetch('./lib/airports.json')
+    // Use an absolute path from the web root, which should work in production
+    airportsPromise = fetch('/lib/airports.json')
         .then(response => {
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status} for /lib/airports.json`);
+            }
             return response.json();
         })
-        .then((allAirportsData: RawAirport[]) => {
-            airports = allAirportsData
-                // Fix: Explicitly type the returned object as Airport to match the type predicate in the following filter.
+        .then(allAirportsData => {
+            airports = (allAirportsData as RawAirport[])
                 .map((airport: RawAirport): Airport => ({
                     iata: airport.iata_code,
                     name: airport.name,
                     city: airport.city,
                     country: airport.country,
                 }))
-                .filter((airport): airport is Airport => !!airport.iata && !!airport.name); // Filter out entries without essential data
+                .filter((airport): airport is Airport => !!airport.iata && !!airport.name);
         })
         .catch(error => {
-            console.error("Failed to load airport data:", error);
+            console.error("Could not load airport data:", error);
+            // Reset promise on error to allow retrying
             airportsPromise = null;
-            throw error;
         });
 
     return airportsPromise;
 };
 
-loadAirports();
 
 const popularAirportIatas = {
     'mexico': ['MEX', 'CUN', 'GDL', 'TIJ', 'MTY'],
     'usa': ['ATL', 'DFW', 'DEN', 'ORD', 'LAX', 'JFK', 'MCO', 'MIA', 'LAS', 'CLT'],
     'europe': ['LHR', 'CDG', 'AMS', 'FRA', 'MAD', 'FCO', 'MUC', 'BCN', 'ZRH', 'LIS'],
     'dubai': ['DXB']
+};
+
+const getAirportByIata = (iata: string): Airport | undefined => {
+    if (!iata) return undefined;
+    return airports.find(airport => airport.iata.toUpperCase() === iata.toUpperCase());
 };
 
 export const getPopularAirports = async (): Promise<PopularAirportGroup[]> => {
@@ -67,10 +77,9 @@ export const getPopularAirports = async (): Promise<PopularAirportGroup[]> => {
     for (const [titleKey, iatas] of Object.entries(popularAirportIatas)) {
         const group: PopularAirportGroup = { titleKey: titleKey as PopularAirportGroup['titleKey'], airports: [] };
         
-        const airportPromises = iatas.map(iata => getAirportByIata(iata));
-        const foundAirports = await Promise.all(airportPromises);
+        const foundAirports = iatas.map(iata => getAirportByIata(iata)).filter((airport): airport is Airport => airport !== undefined);
 
-        group.airports = foundAirports.filter((airport): airport is Airport => airport !== undefined);
+        group.airports = foundAirports;
         
         if (group.airports.length > 0) {
             popularAirportGroups.push(group);
@@ -97,10 +106,4 @@ export const searchAirports = async (query: string): Promise<Airport[]> => {
     ).slice(0, 20);
 
     return results;
-};
-
-export const getAirportByIata = async (iata: string): Promise<Airport | undefined> => {
-    await loadAirports();
-    if (!iata) return undefined;
-    return airports.find(airport => airport.iata.toUpperCase() === iata.toUpperCase());
 };

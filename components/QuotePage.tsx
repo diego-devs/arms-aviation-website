@@ -38,22 +38,22 @@ const AirportInput: React.FC<AirportInputProps> = ({ id, label, onAirportSelect,
     const { t } = useLanguage();
 
     useEffect(() => {
-        getPopularAirports().then(setPopularAirports).catch(console.error);
+        getPopularAirports().then(data => {
+            setPopularAirports(data);
+        });
     }, []);
 
     useEffect(() => {
-        const fetchAirports = async () => {
-            if (debouncedQuery.length > 2) {
-                const searchResult = await searchAirports(debouncedQuery);
+        if (debouncedQuery.length > 2) {
+            searchAirports(debouncedQuery).then(searchResult => {
                 setResults(searchResult);
                 setDropdownVisible(searchResult.length > 0);
-            } else if (query.length > 0 && debouncedQuery.length <= 2) {
-                setDropdownVisible(false);
-            } else if (query.length === 0 && document.activeElement !== document.getElementById(id)) {
-                 setDropdownVisible(false);
-            }
-        };
-        fetchAirports().catch(console.error);
+            });
+        } else if (query.length > 0 && debouncedQuery.length <= 2) {
+            setDropdownVisible(false);
+        } else if (query.length === 0 && document.activeElement !== document.getElementById(id)) {
+             setDropdownVisible(false);
+        }
     }, [debouncedQuery, query, id]);
 
     useEffect(() => {
@@ -255,7 +255,7 @@ const QuotePage: React.FC<QuotePageProps> = ({ onNavigate, preSelectedAircraftId
                 </button>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                     {/* Left Column: Form */}
-                    <div className="bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-md p-8 rounded-lg border border-gray-200/50 dark:border-gray-700/50">
+                    <div className="bg-gray-50/80 dark:bg-black/80 backdrop-blur-md p-8 rounded-lg border border-gray-200/50 dark:border-gray-700/50">
                         <h1 className="text-3xl md:text-4xl font-black uppercase tracking-widest text-gray-900 dark:text-gray-100 mb-8">
                             {t.quotePage.title}
                         </h1>
