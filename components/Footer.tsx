@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { FacebookIcon, InstagramIcon, TwitterIcon } from './icons/SocialIcons';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -58,9 +57,25 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                     <div>
                         <h4 className="font-bold uppercase tracking-wider text-gray-800 dark:text-gray-100">{t.footer.followUs}</h4>
                         <div className="mt-4 flex space-x-4">
-                            <a href="#" aria-label="Facebook" className="text-gray-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"><FacebookIcon /></a>
-                            <a href="#" aria-label="Instagram" className="text-gray-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"><InstagramIcon /></a>
-                            <a href="#" aria-label="X" className="text-gray-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"><TwitterIcon /></a>
+                            {/* Disabled Facebook icon for now */}
+                            {/* <a href="#" aria-label="Facebook" className="text-gray-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+                                <FacebookIcon />
+                            </a> */}
+                            
+                            <a 
+                                href="https://www.instagram.com/armsaviation/" 
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="Instagram" 
+                                className="text-gray-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
+                            >
+                                <InstagramIcon />
+                            </a>
+
+                            {/* Disabled X/Twitter icon for now */}
+                            {/* <a href="#" aria-label="X" className="text-gray-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+                                <TwitterIcon />
+                            </a> */}
                         </div>
                     </div>
                 </div>
